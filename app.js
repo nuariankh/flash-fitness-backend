@@ -3,11 +3,20 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const mongoose = require('mongoose');
+require('dotenv').config();
+
+mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+.then(() => console.log('MongoDB Connected'))
+.catch(err => console.log(err));
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+const trainersRouter = require('./routes/trainers');
+const gymClassesRouter = require('./routes/gymClasses');
 
 var app = express();
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +30,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/trainers', trainersRouter);
+app.use('/classes', gymClassesRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
