@@ -39,14 +39,22 @@ router.post('/login', (req, res) => {
                 return next(err);
             }
             const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: 3600 });
+            
+            res.cookie('jwtToken', token, {
+                maxAge: 3600000,
+                sameSite: 'strict' // prevents browser from sending cookie with cross-site requests
+            });
+            
             return res.json({ success: true, token: token });
         })
     })(req, res)
 });
 
-router.get('/logout', async(req, res, next) => {
-    
+router.get('/logout', async (req, res, next) => {
+    res.clearCookie('jwtToken');
+    res.redirect('/');
 });
+
 
 /* GET users listing. */
 router.get('/', async (req, res, next) => {

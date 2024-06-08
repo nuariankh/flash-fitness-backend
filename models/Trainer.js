@@ -6,13 +6,17 @@ const TrainerSchema = new Schema({
         type: String,
         required: true
     },
+    tagline: {
+        type: String,
+        required: false
+    },
     lastname: {
         type: String,
         required: true
     },
     bio: {
         type: String,
-        required: true
+        required: false
     },
     image: {
         type: String,
